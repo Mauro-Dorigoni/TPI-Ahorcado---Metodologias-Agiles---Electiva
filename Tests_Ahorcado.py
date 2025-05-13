@@ -20,8 +20,14 @@ class TestAhorcado(unittest.TestCase):
         riskedLetter = 'k'
         ahorcado = Ahorcado("Universidad")
         self.assertFalse(ahorcado.riskLetter(riskedLetter))
+
     def test_RiskRightLetterThenKeepLife(self):
         riskedLetter = 'U'
+        ahorcado = Ahorcado("Universidad")
+        self.assertTrue(ahorcado.riskLetter(riskedLetter))
+
+    def test_RiskRightLetterThenKeepLife_v2(self):
+        riskedLetter = 'd'
         ahorcado = Ahorcado("Universidad")
         self.assertTrue(ahorcado.riskLetter(riskedLetter))
 

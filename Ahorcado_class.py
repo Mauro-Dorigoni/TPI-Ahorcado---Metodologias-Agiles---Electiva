@@ -15,7 +15,7 @@ class Ahorcado:
         
     def riskLetter(self, riskedLetter:str):
         #Return True if the letter is correct. Another case, false.
-        if ("U"==riskedLetter):
+        if (riskedLetter in self.rigthWord):    
             return True
         else:
             return False
