@@ -3,13 +3,11 @@ from Ahorcado_class import Ahorcado
 
 
 class TestAhorcado(unittest.TestCase):
-  
 
     def test_RiskWrongWordThenLose(self):
         riskedWord = "palabra"
         ahorcado = Ahorcado("hola")
         self.assertFalse(ahorcado.riskWord(riskedWord))
-        
 
     def test_RiskRightWordThenWin(self):
         riskedWord = "Universidad"
@@ -31,7 +29,20 @@ class TestAhorcado(unittest.TestCase):
         ahorcado = Ahorcado("Universidad")
         self.assertTrue(ahorcado.riskLetter(riskedLetter))
 
-    
+    def test_RiskSixWrongLettersThenLoseGame(self):
+        ahorcado = Ahorcado("Universidad")
+        riskedLetters = ["z","y","f","w","o","m"]
+        for i in range(0,5,1):
+            ahorcado.riskLetter(riskedLetters[i])
+        self.assertEqual(ahorcado.riskLetter(riskedLetters[5]),"Game Over")
+
+    def test_getRightWord(self):
+        word = "Universidad"
+        ahorcado = Ahorcado(word)
+        rightWord = ahorcado.getRightWord()
+        self.assertIsInstance(rightWord,str)
+        self.assertTrue(rightWord.strip() != "")
+        self.assertEqual(word, rightWord)
 
 if __name__ == '__main__':
     unittest.main()
