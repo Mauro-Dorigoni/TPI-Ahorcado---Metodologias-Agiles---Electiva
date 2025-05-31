@@ -2,8 +2,8 @@ class Ahorcado:
     
     rigthWord="Universidad"
 
-    def __init__(self, rigthWord:str):
-        self.rigthWord = rigthWord
+    def __init__(self):
+        self.rigthWord = "Auto"
         self.lives = 6
         pass
     
