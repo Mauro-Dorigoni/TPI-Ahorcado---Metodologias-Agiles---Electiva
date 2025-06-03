@@ -6,8 +6,6 @@ class Ahorcado:
     rightWord = ""
     possible_letters = set(string.ascii_lowercase) #All simbols in the alphabet [65,90]
 
-
-
     def __init__(self):
         self.rightWord = self.__getWord()
         self.lives = 6
