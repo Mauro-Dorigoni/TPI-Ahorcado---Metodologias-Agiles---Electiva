@@ -1,7 +1,12 @@
 import random
+import string
+
 class Ahorcado:   
 
     rightWord = ""
+    possible_letters = set(string.ascii_lowercase) #All simbols in the alphabet [65,90]
+
+
 
     def __init__(self):
         self.rightWord = self.__getWord()
@@ -19,7 +24,7 @@ class Ahorcado:
             return False
         
     def riskLetter(self, riskedLetter:str):
-        #Return True if the letter is correct. Another case, false.
+        #Return True if the letter is correct. If not sustrct one life, and return False. If lives == 0, return "Game over"
         if (riskedLetter in self.rightWord):    
             return True
         else:
@@ -27,7 +32,7 @@ class Ahorcado:
             if(self.lives == 0):
                 return "Game Over"
             else:
-                return False
+                return False 
 
     def __getWord(self):
         with open('palabras.txt', 'r', encoding='utf-8') as f:

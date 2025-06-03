@@ -4,6 +4,8 @@ import string
 import random
 
 class TestAhorcado(unittest.TestCase):
+
+    #Return a random letter from the correct word
     @staticmethod
     def getRightLetter(palabra):
         letras_posibles = set(string.ascii_lowercase)
@@ -11,12 +13,14 @@ class TestAhorcado(unittest.TestCase):
         letras_disponibles = list(letras_en_palabra)
         return random.choice(letras_disponibles)
 
+    #Return a random letter not in the right word
     @staticmethod
     def getWrongLetter(palabra):
         letras_posibles = set(string.ascii_lowercase)
         letras_en_palabra = set(palabra.lower())
         letras_disponibles = list(letras_posibles - letras_en_palabra)
         return random.choice(letras_disponibles)
+
 
     def test_RiskWrongWordThenLose(self):
         riskedWord = "palabra"
@@ -28,6 +32,7 @@ class TestAhorcado(unittest.TestCase):
         riskedWord = ahorcado.getRightWord()
         self.assertTrue(ahorcado.riskWord(riskedWord))
     
+    #Test risking a wrong letter then lose a life
     def test_RiskWrongLetterThenLoseLife(self):
         ahorcado = Ahorcado()
         palabra = ahorcado.getRightWord()
