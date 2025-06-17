@@ -28,7 +28,14 @@ class Ahorcado:
         
     def riskLetter(self, riskedLetter:str):
         #Return True if the letter is correct. If not sustrct one life, and return False. If lives == 0, return "Game over". Add letter to riskedLetters
-        self.riskedLetters.add(riskedLetter.lower())
+        riskedLetter = riskedLetter.lower()
+
+        #Verifies that the letter hasn't been risked before
+        if riskedLetter in self.riskedLetters:
+            return False
+        
+        self.riskedLetters.add(riskedLetter)
+
         if (riskedLetter in self.rightWord):    
             return True
         else:

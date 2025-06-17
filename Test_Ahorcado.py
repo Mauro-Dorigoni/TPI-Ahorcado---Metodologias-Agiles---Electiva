@@ -49,10 +49,14 @@ class TestAhorcado(unittest.TestCase):
     def test_RiskSixWrongLettersThenLoseGame(self):
         ahorcado = Ahorcado()
         palabra = ahorcado.getRightWord()
-        riskedLetters = [self.getWrongLetter(palabra),self.getWrongLetter(palabra),self.getWrongLetter(palabra),self.getWrongLetter(palabra),self.getWrongLetter(palabra),self.getWrongLetter(palabra)]
-        for i in range(0,5,1):
+    
+        wrongLetters = list(set(string.ascii_lowercase) - set(palabra))
+        riskedLetters = wrongLetters[:6]
+
+        for i in range(5):
             ahorcado.riskLetter(riskedLetters[i])
-        self.assertEqual(ahorcado.riskLetter(riskedLetters[5]),"Game Over")
+    
+        self.assertEqual(ahorcado.riskLetter(riskedLetters[5]), "Game Over")
     
     #Test that the right word is a string and not empty
     def test_getRightWord(self):
@@ -103,6 +107,19 @@ class TestAhorcado(unittest.TestCase):
     def test_InitialRiskedLettersEmpty(self):
         ahorcado = Ahorcado()
         self.assertEqual(len(ahorcado.getRiskedLetters()), 0)
+
+    def test_RiskWrongLetterAgainNotLoseLife(self):
+        ahorcado = Ahorcado()
+        palabra = ahorcado.getRightWord()
+        riskedLetter = self.getWrongLetter(palabra)
+
+        risk1 = ahorcado.riskLetter(riskedLetter)
+        lives1 = ahorcado.lives
+
+        risk2 = ahorcado.riskLetter(riskedLetter)
+        lives2 = ahorcado.lives
+
+        self.assertEqual(lives1, lives2)
 
 if __name__ == '__main__':
     unittest.main()
