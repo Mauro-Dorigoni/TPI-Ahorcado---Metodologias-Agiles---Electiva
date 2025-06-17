@@ -9,8 +9,13 @@ class Ahorcado:
     def __init__(self):
         self.rightWord = self.__getWord()
         self.lives = 6
+        self.wordState = ['_' for _ in self.rightWord]
+        self.riskedLetters = set()
         pass
     
+    def getWordState(self):
+        return ''.join(self.wordState)
+
     def getRightWord(self):
         return self.rightWord
 
@@ -22,7 +27,8 @@ class Ahorcado:
             return False
         
     def riskLetter(self, riskedLetter:str):
-        #Return True if the letter is correct. If not sustrct one life, and return False. If lives == 0, return "Game over"
+        #Return True if the letter is correct. If not sustrct one life, and return False. If lives == 0, return "Game over". Add letter to riskedLetters
+        self.riskedLetters.add(riskedLetter.lower())
         if (riskedLetter in self.rightWord):    
             return True
         else:
@@ -31,6 +37,9 @@ class Ahorcado:
                 return "Game Over"
             else:
                 return False 
+
+    def getRiskedLetters(self):
+        return self.riskedLetters
 
     def __getWord(self):
         with open('palabras.txt', 'r', encoding='utf-8') as f:

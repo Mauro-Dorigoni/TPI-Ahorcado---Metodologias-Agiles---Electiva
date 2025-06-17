@@ -85,5 +85,24 @@ class TestAhorcado(unittest.TestCase):
 
         self.assertEqual(len(words), 5)
 
+    #Test that the player has 6 lives at the start of the game
+    def test_startLives6(self):
+        ahorcado = Ahorcado()
+        self.assertEqual(ahorcado.lives, 6)
+    
+    #Test that initially the word is hidden (by showing a _ for each letter)
+    def test_InitialWordHidden(self):
+        ahorcado = Ahorcado()
+        palabra = ahorcado.getRightWord()
+        estado = ahorcado.getWordState()
+        for letra in estado:
+            self.assertEqual(letra, '_')
+        self.assertEqual(len(estado), len(palabra))
+
+    #Test that at the beginning there are no risked letters
+    def test_InitialRiskedLettersEmpty(self):
+        ahorcado = Ahorcado()
+        self.assertEqual(len(ahorcado.getRiskedLetters()), 0)
+
 if __name__ == '__main__':
     unittest.main()
