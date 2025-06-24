@@ -1,8 +1,8 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from Ahorcado_class import Ahorcado
 
 app = Flask(__name__)
-ahorcado = Ahorcado()
+ahorcado = None
 
 #GET POST PUT DELETE
 
@@ -13,34 +13,63 @@ def saludo():
 
 @app.route('/getRightWord', methods=['GET'])
 def getRightWord():
+
+    if ahorcado is None:
+        return jsonify({'error': 'No hay juego iniciado'}), 400
+    
     return ahorcado.getRightWord()
 
 
 @app.route('/getWordState', methods=['GET'])
 def getWordState():
+
+    if ahorcado is None:
+        return jsonify({'error': 'No hay juego iniciado'}), 400
+    
     return ahorcado.getWordState()
 
 
 @app.route('/riskWord', methods=['POST'])
 def riskWord():
+
+    if ahorcado is None:
+        return jsonify({'error': 'No hay juego iniciado'}), 400
+    
     riskedWord = request.args.get('riskedWord', '')
-    return ahorcado.riskWord(riskedWord)
+    return str(ahorcado.riskWord(riskedWord))
+    
 
 
 
 @app.route('/riskedLetter', methods=['POST'])
 def riskedLetter():
-    riskedLetter = request.args.get('riskedLetter', '')
-    return ahorcado.riskWord(riskedLetter)
+
+    if ahorcado is None:
+        return jsonify({'error': 'No hay juego iniciado'}), 400
+    
+    riskedLetter = str(request.args.get('riskedLetter', '')).lower()
+
+    return str(ahorcado.riskLetter(riskedLetter))
+
 
 
 
 @app.route('/getRiskedLetters', methods=['GET'])
 def getRiskedLetters():
-    return ahorcado.getRiskedLetters()
+
+    if ahorcado is None:
+        return jsonify({'error': 'No hay juego iniciado'}), 400
+    
+    return str(ahorcado.getRiskedLetters())
 
 
+@app.route('/startGame', methods=['POST'])
+def startGame():
+    global ahorcado
+    ahorcado = Ahorcado()
+    return 'New Game Started'
 
 
 if __name__ == '__main__':
     app.run(debug=True)
+
