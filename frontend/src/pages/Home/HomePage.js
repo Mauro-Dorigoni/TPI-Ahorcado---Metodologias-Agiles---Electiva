@@ -9,8 +9,9 @@ const Home = () => {
   const navigate = useNavigate();
   const { startTimer } = useContext(GameContext);
 
-  const handleStart = () => {
+  const handleStart = (e) => {
     // palabra acá o después?
+    e.preventDefault();
     startTimer();
     navigate("/game");
   };
@@ -35,7 +36,7 @@ const Home = () => {
           <option value='hard'>Hard</option>
         </select>
 
-        <button onClick={handleStart} className='start-button'>Start Game</button>
+        <button type="button" onClick={handleStart} className='start-button'>Start Game</button>
       </form>
     </div>
   );
