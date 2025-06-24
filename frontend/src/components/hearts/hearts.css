@@ -1,0 +1,14 @@
+/* src/components/hearts/hearts.css */
+.lives-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 170px;
+}
+
+.heart-icon {
+  width: 45px;
+  height: 40px;
+  object-fit: contain;
+}
