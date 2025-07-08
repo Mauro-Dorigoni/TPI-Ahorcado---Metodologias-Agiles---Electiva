@@ -62,7 +62,7 @@ def getRiskedLetters():
 @app.route('/startGame', methods=['POST'])
 def startGame():
     """Inicia un nuevo juego asignando una nueva palabra."""
-    global ahorcado
+    global ahorcado # pylint: disable=global-statement
     ahorcado = Ahorcado()
     return jsonify({'message': 'New Game Started'})
 
