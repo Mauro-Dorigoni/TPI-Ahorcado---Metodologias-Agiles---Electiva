@@ -121,5 +121,5 @@ class TestAhorcado(unittest.TestCase):
 
         self.assertEqual(lives1, lives2)
 
-if __name__ == '__main__':
-    unittest.main()
+# if __name__ == '__main__':
+#     unittest.main()
