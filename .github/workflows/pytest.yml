@@ -31,7 +31,10 @@ jobs:
       - name: Run tests with coverage
         run: |
           coverage run -m pytest -v
-          coverage report --fail-under=80
+
+      - name: Show uncovered lines in terminal
+        run: coverage report -m --fail-under=80
+
 
       - name: Generate HTML coverage report
         run: coverage html
