@@ -6,7 +6,7 @@ from flask import Flask, request, jsonify
 from ahorcado_class import Ahorcado
 
 app = Flask(__name__)
-ahorcado = None
+ahorcado = None # pylint: disable=invalid-name
 
 @app.route('/saludo', methods=['POST'])
 def saludo():
@@ -47,8 +47,8 @@ def riskedLetter():
     """
     if ahorcado is None:
         return jsonify({'error': 'No hay juego iniciado'}), 400
-    riskedLetter = request.args.get('riskedLetter', '').lower()
-    resultado = ahorcado.riskLetter(riskedLetter)
+    riskedLetters = request.args.get('riskedLetters', '').lower()
+    resultado = ahorcado.riskLetter(riskedLetters)
     return jsonify({'result': resultado})
 
 @app.route('/getRiskedLetters', methods=['GET'])
