@@ -5,12 +5,15 @@ import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GameContext } from '../../context/GameContext';
 
+const apiURL = process.env.REACT_APP_API_URL;
+
+
 const Home = () => {
   const navigate = useNavigate();
   const { startTimer } = useContext(GameContext);
 
   const handleStart = (e) => {
-    // palabra acá o después?
+    fetch(`${apiURL}/startGame`,{method: "POST"});
     e.preventDefault();
     startTimer();
     navigate("/game");

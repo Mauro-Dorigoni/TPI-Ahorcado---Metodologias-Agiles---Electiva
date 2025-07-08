@@ -3,9 +3,11 @@ API REST para el juego Ahorcado usando Flask.
 """
 
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from ahorcado_class import Ahorcado
 
 app = Flask(__name__)
+CORS(app)
 ahorcado = None # pylint: disable=invalid-name
 
 @app.route('/saludo', methods=['POST'])
