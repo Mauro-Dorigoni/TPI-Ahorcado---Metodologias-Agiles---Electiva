@@ -1,6 +1,6 @@
 import './keyboard.css';
 
-const Keyboard = ({ onLetterClick, usedLetters = [] }) => {
+const Keyboard = ({ onLetterClick, usedLetters = [], correctLetter }) => {
   const rows = [
     ['Q','W','E','R','T','Y','U','I','O'],
     ['P','A','S','D','F','G','H','J','K'],
@@ -16,7 +16,7 @@ const Keyboard = ({ onLetterClick, usedLetters = [] }) => {
               key={letter}
               onClick={() => onLetterClick(letter)}
               disabled={usedLetters.includes(letter)}
-              className="keyboard-button"
+              className={`keyboard-button ${correctLetter === letter ? 'correct-flash' : ''}`}
             >
               {letter}
             </button>

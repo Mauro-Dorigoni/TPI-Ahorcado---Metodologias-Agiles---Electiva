@@ -69,7 +69,6 @@ piso
 reloj
 radio
 televisor
-computadora
 telefono
 camara
 pelota
