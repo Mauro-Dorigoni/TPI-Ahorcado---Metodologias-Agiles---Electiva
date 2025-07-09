@@ -6,18 +6,20 @@ import Lives from '../../components/hearts/hearts';
 import Word from '../../components/word/word';
 import Win from '../../components/win/win';
 import Lose from '../../components/lose/lose';
+import Guess from '../../components/guess/guess';
 import { GameContext } from '../../context/GameContext';
 
 const apiURL = process.env.REACT_APP_API_URL;
 
 function Game() {
   const [wordState, setWordState] = useState([]);
-  const [lives, setLives] = useState(6); 
+  const [lives, setLives] = useState(6);
   const [usedLetters, setUsedLetters] = useState([]);
   const [rightWord, setRightWord] = useState('');
   const [correctLetter, setCorrectLetter] = useState(null);
   const [showWin, setShowWin] = useState(false);
   const [showLose, setShowLose] = useState(false);
+  const [showGuessPopup, setShowGuessPopup] = useState(false);
   const { time, stopTimer } = useContext(GameContext);
 
   useEffect(() => {
@@ -77,6 +79,18 @@ function Game() {
       });
   };
 
+  const handleGuessSubmit = (guess) => {
+    const formattedGuess = guess.trim().toLowerCase();
+    setShowGuessPopup(false);
+    if (formattedGuess === rightWord.toLowerCase()) {
+      stopTimer();
+      setShowWin(true);
+    } else {
+      stopTimer();
+      setShowLose(true);
+    }
+  };
+
   useEffect(() => {
     if (wordState.length > 0 && !wordState.includes('_')) {
       stopTimer();
@@ -89,11 +103,24 @@ function Game() {
       <Navbar />
       <Word wordState={wordState} correctLetter={correctLetter} />
       <Lives lives={lives} />
-      <Keyboard 
-        onLetterClick={handleLetterClick} 
-        usedLetters={usedLetters} 
-        correctLetter={correctLetter} 
+      <Keyboard
+        onLetterClick={handleLetterClick}
+        usedLetters={usedLetters}
+        correctLetter={correctLetter}
       />
+
+      <button className="guess-button" onClick={() => setShowGuessPopup(true)}>
+        Guess
+      </button>
+
+      {showGuessPopup && (
+        <Guess
+          onClose={() => setShowGuessPopup(false)}
+          onSubmit={handleGuessSubmit}
+          wordLength={rightWord.length}
+        />
+      )}
+
       {showWin && <Win word={rightWord} time={time} />}
       {showLose && <Lose word={rightWord} time={time} />}
     </div>

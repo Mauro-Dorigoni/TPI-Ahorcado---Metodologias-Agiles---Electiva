@@ -23,8 +23,8 @@
 }
 
 .exit-popup h1{
-  font-size: 28px;
-  color: #6B6666;
+  font-size: 20px;
+  color: #3F3C3C;
   margin-bottom: 10px;
 }
 
@@ -35,15 +35,15 @@
 
 .confirm-button {
   background-color: #6B6666;
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 600;
-  color: #f5f5f5;
+  color: white;
+  border: 2px solid #3F3C3C;
+  border-radius: 8px;
+  padding: 12px 24px;
   font-size: 18px;
-  border: none;
-  border-radius: 10px;
-  padding: 10px 25px;
+  font-family: 'Montserrat', sans-serif;
   cursor: pointer;
-  transition: background-color 0.3s;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.2s ease;
 }
 
 .cancel-button {
@@ -52,8 +52,8 @@
   font-weight: 600;
   color: #6B6666;
   font-size: 18px;
-  border-radius: 10px;
-  padding: 10px 25px;
+  border-radius: 8px;
+  padding: 12px 24px;
   cursor: pointer;
   transition: background-color 0.3s;
 }
