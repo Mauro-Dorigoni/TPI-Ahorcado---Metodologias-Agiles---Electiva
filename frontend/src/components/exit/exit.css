@@ -1,0 +1,59 @@
+.exit-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 30;
+}
+
+.exit-popup {
+  background-color: #f5f4f4;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  font-family: 'Montserrat', sans-serif;
+  position: relative;
+  max-width: 90%;
+}
+
+.exit-popup h1{
+  font-size: 20px;
+  color: #3F3C3C;
+  margin-bottom: 10px;
+}
+
+.exit-popup p {
+  font-size: 18px;
+  color: #534F4F;
+}
+
+.confirm-button {
+  background-color: #6B6666;
+  color: white;
+  border: 2px solid #3F3C3C;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 18px;
+  font-family: 'Montserrat', sans-serif;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.2s ease;
+}
+
+.cancel-button {
+  border: 2px solid #6B6666;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  color: #6B6666;
+  font-size: 18px;
+  border-radius: 8px;
+  padding: 12px 24px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}

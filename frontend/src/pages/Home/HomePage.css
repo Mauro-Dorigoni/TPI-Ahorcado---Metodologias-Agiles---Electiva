@@ -33,6 +33,7 @@ h2 {
   margin-top: 25px;
   margin-bottom: 5px;
   font-size: 20px;
+  color: #534F4F;
 }
 
 select {
@@ -49,19 +50,19 @@ select {
 .start-button {
   margin-top: 15px;
   background-color: #6B6666;
+  color: white;
+  border: 2px solid #3F3C3C;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 18px;
   font-family: 'Montserrat', sans-serif;
-  font-weight: 600;
-  color: #f5f5f5;
-  font-size: 20px;
-  border: none;
-  border-radius: 10px;
-  padding: 15px 40px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.2s ease;
   width: 100%;
   text-align: center;
-  cursor: pointer;
-  transition: background-color 0.3s;
 }
 
 .start-button:hover {
-  background-color: #534f4f;
+  background-color: #575353;
 }

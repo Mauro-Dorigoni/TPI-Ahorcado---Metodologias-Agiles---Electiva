@@ -1,82 +1,81 @@
+
+#REST API for the hangman game, using the hangban class.
+
 from flask import Flask, request, jsonify
-from Ahorcado_class import Ahorcado
+from flask_cors import CORS
+from ahorcado_class import Ahorcado
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+environment = os.getenv("FLASK_ENV")
+if(environment == "development"):
+    debug_mode = True
+else:
+    debug_mode = False
 
 app = Flask(__name__)
-ahorcado = None
-
-#GET POST PUT DELETE
+CORS(app)
+ahorcado = None # pylint: disable=invalid-name
 
 @app.route('/saludo', methods=['POST'])
 def saludo():
+    #Greets the user. Purely for debugging purposes.
     nombre = request.args.get('nombre', 'desconocido')
     return f'Hola, {nombre}!'
 
-#GET --> RETURN RIGHT WORD 
 @app.route('/getRightWord', methods=['GET'])
 def getRightWord():
-
+    #Returns the right word for the current game
     if ahorcado is None:
         return jsonify({'error': 'No hay juego iniciado'}), 400
-    
-    return ahorcado.getRightWord()
+    return jsonify({'rightWord': ahorcado.getRightWord()})
 
-
-#GET --> RETURN STATE OF THE WORD. EXAMPLE: L A U _ A R _
 @app.route('/getWordState', methods=['GET'])
 def getWordState():
-
+    #Returns the current state of the palayers gueses (right letters discovered)
     if ahorcado is None:
         return jsonify({'error': 'No hay juego iniciado'}), 400
-    
-    return ahorcado.getWordState()
+    return jsonify({'wordState': ahorcado.getWordState()})
 
-
-#POST --> RECIBE A WORD TO RISK IN AN ARGUMENT. RETURN TRUE OR FALSE IF IS NOT CORRECT.
-#EXAMPLE /riskWord?riskedWord=melon
 @app.route('/riskWord', methods=['POST'])
 def riskWord():
-
+    #Recieves a risked word and returns true or false.
     if ahorcado is None:
         return jsonify({'error': 'No hay juego iniciado'}), 400
-    
     riskedWord = request.args.get('riskedWord', '')
-    return str(ahorcado.riskWord(riskedWord))
-    
+    resultado = ahorcado.riskWord(riskedWord)
+    return jsonify({'result': resultado})
 
-
-#POST --> RECIBE A LETTER TO RISK IN AN ARGUMENT. RETURN TRUE OR FALSE IF IS NOT CORRECT. RETURN GAME OVER IF LIVES = 0
-# CA: ¿Puede ser mala practica que una función devuelva dos tipos de datos distintos? (Tecnicamente son todos string, pero...)
-#EXAMPLE /riskedLetter?riskedLetter=m
 @app.route('/riskedLetter', methods=['POST'])
 def riskedLetter():
-
+    """
+    Recieves a risked letter and returns:
+    - Trueif the letter is in the right word,
+    - False if its not,
+    - "Game Over" if the player is out of lives.
+    """
     if ahorcado is None:
         return jsonify({'error': 'No hay juego iniciado'}), 400
-    
-    riskedLetter = str(request.args.get('riskedLetter', '')).lower()
+    riskedLetters = request.args.get('riskedLetters', '').lower()
+    resultado = ahorcado.riskLetter(riskedLetters)
+    return jsonify({'result': resultado})
 
-    return str(ahorcado.riskLetter(riskedLetter))
-
-
-
-#GET --> RETURN A LIST WITH RISKED LETTERS 
 @app.route('/getRiskedLetters', methods=['GET'])
 def getRiskedLetters():
-
+    #Returns the list of risked letter by the player
     if ahorcado is None:
         return jsonify({'error': 'No hay juego iniciado'}), 400
-    
-    return str(ahorcado.getRiskedLetters())
+    letras = list(ahorcado.getRiskedLetters())
+    return jsonify({'riskedLetters': letras})
 
-
-#POST --> START A GAME. ASSING A NEW WORD EVERY TIME IS CALLED.
 @app.route('/startGame', methods=['POST'])
 def startGame():
-    global ahorcado
+    #Starts a new hangman game
+    global ahorcado # pylint: disable=global-statement
     ahorcado = Ahorcado()
-    return 'New Game Started'
+    return jsonify({'message': 'New Game Started'})
 
-#ONLY SUPPORT SINGLE PLAYER. 
 if __name__ == '__main__':
-    app.run(debug=True)
-
+    app.run(debug=debug_mode, host='0.0.0.0', port=10000)
