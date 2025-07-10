@@ -1,10 +1,19 @@
-"""
-API REST para el juego Ahorcado usando Flask.
-"""
+
+#REST API for the hangman game, using the hangban class.
 
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from ahorcado_class import Ahorcado
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+environment = os.getenv("FLASK_ENV")
+if(environment == "development"):
+    debug_mode = True
+else:
+    debug_mode = False
 
 app = Flask(__name__)
 CORS(app)
@@ -12,27 +21,27 @@ ahorcado = None # pylint: disable=invalid-name
 
 @app.route('/saludo', methods=['POST'])
 def saludo():
-    """Saluda al usuario con el nombre dado en el parámetro 'nombre'."""
+    #Greets the user. Purely for debugging purposes.
     nombre = request.args.get('nombre', 'desconocido')
     return f'Hola, {nombre}!'
 
 @app.route('/getRightWord', methods=['GET'])
 def getRightWord():
-    """Devuelve la palabra correcta del juego actual."""
+    #Returns the right word for the current game
     if ahorcado is None:
         return jsonify({'error': 'No hay juego iniciado'}), 400
     return jsonify({'rightWord': ahorcado.getRightWord()})
 
 @app.route('/getWordState', methods=['GET'])
 def getWordState():
-    """Devuelve el estado actual de la palabra (letras descubiertas)."""
+    #Returns the current state of the palayers gueses (right letters discovered)
     if ahorcado is None:
         return jsonify({'error': 'No hay juego iniciado'}), 400
     return jsonify({'wordState': ahorcado.getWordState()})
 
 @app.route('/riskWord', methods=['POST'])
 def riskWord():
-    """Recibe una palabra arriesgada y devuelve si es correcta o no."""
+    #Recieves a risked word and returns true or false.
     if ahorcado is None:
         return jsonify({'error': 'No hay juego iniciado'}), 400
     riskedWord = request.args.get('riskedWord', '')
@@ -42,10 +51,10 @@ def riskWord():
 @app.route('/riskedLetter', methods=['POST'])
 def riskedLetter():
     """
-    Recibe una letra arriesgada y devuelve:
-    - True si está en la palabra,
-    - False si no está,
-    - "Game Over" si se acaban las vidas.
+    Recieves a risked letter and returns:
+    - Trueif the letter is in the right word,
+    - False if its not,
+    - "Game Over" if the player is out of lives.
     """
     if ahorcado is None:
         return jsonify({'error': 'No hay juego iniciado'}), 400
@@ -55,7 +64,7 @@ def riskedLetter():
 
 @app.route('/getRiskedLetters', methods=['GET'])
 def getRiskedLetters():
-    """Devuelve la lista de letras ya arriesgadas."""
+    #Returns the list of risked letter by the player
     if ahorcado is None:
         return jsonify({'error': 'No hay juego iniciado'}), 400
     letras = list(ahorcado.getRiskedLetters())
@@ -63,10 +72,10 @@ def getRiskedLetters():
 
 @app.route('/startGame', methods=['POST'])
 def startGame():
-    """Inicia un nuevo juego asignando una nueva palabra."""
+    #Starts a new hangman game
     global ahorcado # pylint: disable=global-statement
     ahorcado = Ahorcado()
     return jsonify({'message': 'New Game Started'})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=debug_mode, host='0.0.0.0', port=10000)
