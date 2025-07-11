@@ -1,27 +1,26 @@
-GET http://127.0.0.1:5000/holamundo
 
 ###
-POST http://127.0.0.1:5000/saludo?nombre=Mauro
+POST http://127.0.0.1:10000/saludo?nombre=Mauro
 
 ###
-GET http://127.0.0.1:5000/getRightWord
+GET http://127.0.0.1:10000/getRightWord
 
 ###
-GET http://127.0.0.1:5000/getWordState
-
-
-###
-POST http://127.0.0.1:5000/riskWord?riskedWord=melon
+GET http://127.0.0.1:10000/getWordState
 
 
 ###
-POST http://127.0.0.1:5000/riskedLetter?riskedLetter=c
+POST http://127.0.0.1:10000/riskWord?riskedWord=melon
 
 
 ###
-GET http://127.0.0.1:5000/getRiskedLetters
+POST http://127.0.0.1:10000/riskedLetter?riskedLetter=c
+
+
+###
+GET http://127.0.0.1:10000/getRiskedLetters
 
 
 
 ###
-POST  http://127.0.0.1:5000/startGame
+POST  http://127.0.0.1:10000/startGame

@@ -13,10 +13,16 @@ const Home = () => {
   const { startTimer } = useContext(GameContext);
 
   const handleStart = (e) => {
-    fetch(`${apiURL}/startGame`,{method: "POST"});
     e.preventDefault();
-    startTimer();
-    navigate("/game");
+    fetch(`${apiURL}/startGame`,{method: "POST", credentials:"include"})
+    .then((res)=>{
+      if(!res.ok) throw new Error("Error al iniciar el juego");
+      startTimer();
+      navigate("/game");
+    })
+    .catch((err) => {
+      alert("No se pudo iniciar el juego:", err)
+    });
   };
 
   return (

@@ -6,18 +6,40 @@ from flask_cors import CORS
 from ahorcado_class import Ahorcado
 from dotenv import load_dotenv
 import os
+from flask import session
+from uuid import uuid4
 
 load_dotenv()
 
 environment = os.getenv("FLASK_ENV")
-if(environment == "development"):
-    debug_mode = True
-else:
-    debug_mode = False
+debug_mode = True if environment == "development" else False
 
 app = Flask(__name__)
-CORS(app)
-ahorcado = None # pylint: disable=invalid-name
+CORS(app, supports_credentials=True)
+#ahorcado = None # pylint: disable=invalid-name
+
+app.secret_key = os.getenv("SECRET_KEY", "clave-super-secreta")
+
+# Diccionario global de juegos
+games = {}
+
+# Middleware para asegurar que cada cliente tenga un session_id
+@app.before_request
+def ensure_session():
+    if 'session_id' not in session:
+        session['session_id'] = str(uuid4())
+
+# Función auxiliar para obtener el juego actual
+def get_current_game():
+    session_id = session.get('session_id')
+    return games.get(session_id)
+
+# Función auxiliar para establecer el juego actual
+def set_current_game(game_instance):
+    session_id = session.get('session_id')
+    games[session_id] = game_instance
+
+#----------------------------------------------------------------------
 
 @app.route('/saludo', methods=['POST'])
 def saludo():
@@ -28,24 +50,27 @@ def saludo():
 @app.route('/getRightWord', methods=['GET'])
 def getRightWord():
     #Returns the right word for the current game
-    if ahorcado is None:
+    game = get_current_game()
+    if game is None:
         return jsonify({'error': 'No hay juego iniciado'}), 400
-    return jsonify({'rightWord': ahorcado.getRightWord()})
+    return jsonify({'rightWord': game.getRightWord()})
 
 @app.route('/getWordState', methods=['GET'])
 def getWordState():
     #Returns the current state of the palayers gueses (right letters discovered)
-    if ahorcado is None:
+    game = get_current_game()
+    if game is None:
         return jsonify({'error': 'No hay juego iniciado'}), 400
-    return jsonify({'wordState': ahorcado.getWordState()})
+    return jsonify({'wordState': game.getWordState()})
 
 @app.route('/riskWord', methods=['POST'])
 def riskWord():
     #Recieves a risked word and returns true or false.
-    if ahorcado is None:
+    game = get_current_game()
+    if game is None:
         return jsonify({'error': 'No hay juego iniciado'}), 400
     riskedWord = request.args.get('riskedWord', '')
-    resultado = ahorcado.riskWord(riskedWord)
+    resultado = game.riskWord(riskedWord)
     return jsonify({'result': resultado})
 
 @app.route('/riskedLetter', methods=['POST'])
@@ -56,25 +81,28 @@ def riskedLetter():
     - False if its not,
     - "Game Over" if the player is out of lives.
     """
-    if ahorcado is None:
+    game = get_current_game()
+    if game is None:
         return jsonify({'error': 'No hay juego iniciado'}), 400
     riskedLetters = request.args.get('riskedLetters', '').lower()
-    resultado = ahorcado.riskLetter(riskedLetters)
+    resultado = game.riskLetter(riskedLetters)
     return jsonify({'result': resultado})
 
 @app.route('/getRiskedLetters', methods=['GET'])
 def getRiskedLetters():
     #Returns the list of risked letter by the player
-    if ahorcado is None:
+    game = get_current_game()
+    if game is None:
         return jsonify({'error': 'No hay juego iniciado'}), 400
-    letras = list(ahorcado.getRiskedLetters())
+    letras = list(game.getRiskedLetters())
     return jsonify({'riskedLetters': letras})
 
 @app.route('/startGame', methods=['POST'])
 def startGame():
     #Starts a new hangman game
-    global ahorcado # pylint: disable=global-statement
-    ahorcado = Ahorcado()
+    ##global ahorcado # pylint: disable=global-statement
+    ##ahorcado = Ahorcado()
+    set_current_game(Ahorcado())
     return jsonify({'message': 'New Game Started'})
 
 if __name__ == '__main__':

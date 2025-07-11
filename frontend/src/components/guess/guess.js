@@ -50,19 +50,19 @@ const Guess = ({ onClose, onSubmit, wordLength = 1 }) => {
           ))}
         </div>
 
-        <div className="keyboard">
+        <div className="guess-keyboard">
           {rows.map((row, i) => (
-            <div key={i} className="keyboard-row">
+            <div key={i} className="guess-keyboard-row">
               {row.map(letter => (
-                <button key={letter} className="keyboard-button" onClick={() => handleKeyClick(letter)}>
+                <button key={letter} className="guess-keyboard-button" onClick={() => handleKeyClick(letter)}>
                   {letter}
                 </button>
               ))}
             </div>
           ))}
-          <div className="keyboard-row action-row">
-            <button className="keyboard-button action-button" onClick={handleDelete}>🡠</button>
-            <button className="keyboard-button action-button" onClick={handleSubmit}>✓</button>
+          <div className="guess-keyboard-row action-row">
+            <button className="guess-keyboard-button action-button" onClick={handleDelete}>🡠</button>
+            <button className="guess-keyboard-button action-button" onClick={handleSubmit}>✓</button>
           </div>
         </div>
       </div>
