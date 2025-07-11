@@ -24,3 +24,6 @@ GET http://127.0.0.1:10000/getRiskedLetters
 
 ###
 POST  http://127.0.0.1:10000/startGame
+
+###
+POST https://api-ahorcado-grupo-2-metodologias-agiles.onrender.com/startGame

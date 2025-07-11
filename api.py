@@ -15,7 +15,13 @@ environment = os.getenv("FLASK_ENV")
 debug_mode = True if environment == "development" else False
 
 app = Flask(__name__)
-CORS(app, supports_credentials=True)
+
+app.config.update(
+    SESSION_COOKIE_SAMESITE="None",
+    SESSION_COOKIE_SECURE=True
+)
+
+CORS(app, supports_credentials=True, origins=["https://tpi-ahorcado-metodologias-agiles-el.vercel.app","http://localhost:3000"])
 #ahorcado = None # pylint: disable=invalid-name
 
 app.secret_key = os.getenv("SECRET_KEY", "clave-super-secreta")
