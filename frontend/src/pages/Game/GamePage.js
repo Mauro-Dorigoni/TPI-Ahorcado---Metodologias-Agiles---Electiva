@@ -26,11 +26,11 @@ function Game() {
     setLives(6);
     setUsedLetters([]);
 
-    fetch(`${apiURL}/getRightWord`)
+    fetch(`${apiURL}/getRightWord`,{credentials:"include"})
       .then(res => res.json())
       .then(data => {
         setRightWord(data.rightWord);
-        return fetch(`${apiURL}/getWordState`);
+        return fetch(`${apiURL}/getWordState`,{credentials:"include"});
       })
       .then(res => res.json())
       .then(data => {
@@ -48,6 +48,7 @@ function Game() {
 
     fetch(`${apiURL}/riskedLetter?riskedLetters=${lower}`, {
       method: 'POST',
+      credentials: "include",
     })
       .then(res => res.json())
       .then(data => {
@@ -67,7 +68,7 @@ function Game() {
           setShowLose(true);
         }
 
-        return fetch(`${apiURL}/getWordState`);
+        return fetch(`${apiURL}/getWordState`,{credentials:"include"});
       })
       .then(res => res.json())
       .then(data => {
