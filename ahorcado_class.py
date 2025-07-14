@@ -10,11 +10,15 @@ class Ahorcado:
 
     possibleLetters = set(string.ascii_lowercase)  # Constante de clase
 
-    def __init__(self):
-        self.rightWord = self._getWord()
+    def __init__(self, testMode):
+        if testMode:
+            self.rightWord = 'python'
+        else:
+            self.rightWord = self._getWord()
         self.lives = 6
         self.wordState = ['_' for _ in self.rightWord]
         self.riskedLetters = set()
+        
 
     def getWordState(self):
         """Devuelve el estado actual de la palabra con letras descubiertas."""

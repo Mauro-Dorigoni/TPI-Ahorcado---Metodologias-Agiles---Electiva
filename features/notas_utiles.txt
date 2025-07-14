@@ -1,0 +1,3 @@
+Segun Gemini, la API tendría que tener endpoints de testing para asignar palabras. 
+"A menudo, necesitas que tu juego esté en un estado específico antes de que la UI entre en juego. Por ejemplo, para probar "Adivinar una letra correcta", necesitas que ya haya un juego iniciado con una palabra secreta conocida.
+Llamadas a la API de Backend: La forma más limpia y rápida es que tus pasos de Behave hagan una llamada directa a tu API Flask (usando requests) para configurar el estado inicial del juego. Para esto, tu API debería tener endpoints de "test" o "debug" que permitan, por ejemplo, iniciar un juego con una palabra predefinida."

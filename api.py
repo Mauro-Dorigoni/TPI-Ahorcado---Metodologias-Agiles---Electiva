@@ -9,10 +9,12 @@ import os
 from flask import session
 from uuid import uuid4
 
-load_dotenv()
+
+#env_file = os.environ.get("APP_ENV_FILE", ".env")
 
 environment = os.getenv("FLASK_ENV")
 debug_mode = True if environment == "development" else False
+testing = False 
 
 app = Flask(__name__)
 
@@ -32,6 +34,7 @@ games = {}
 # Middleware para asegurar que cada cliente tenga un session_id
 @app.before_request
 def ensure_session():
+#    session['testMode'] = False
     if 'session_id' not in session:
         session['session_id'] = str(uuid4())
 
@@ -105,11 +108,11 @@ def getRiskedLetters():
 
 @app.route('/startGame', methods=['POST'])
 def startGame():
-    #Starts a new hangman game
-    ##global ahorcado # pylint: disable=global-statement
-    ##ahorcado = Ahorcado()
-    set_current_game(Ahorcado())
+
+    set_current_game(Ahorcado(testMode=testing))
     return jsonify({'message': 'New Game Started'})
+
+
 
 if __name__ == '__main__':
     app.run(debug=debug_mode, host='0.0.0.0', port=10000)

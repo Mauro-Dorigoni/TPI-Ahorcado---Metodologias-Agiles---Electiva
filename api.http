@@ -2,6 +2,9 @@
 ###
 POST http://127.0.0.1:10000/saludo?nombre=Mauro
 
+### 
+POST http://127.0.0.1:10000/test/startGame
+
 ###
 GET http://127.0.0.1:10000/getRightWord
 

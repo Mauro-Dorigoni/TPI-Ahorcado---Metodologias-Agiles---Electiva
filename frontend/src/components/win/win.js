@@ -32,11 +32,11 @@ const Win = ({ word, time }) => {
         <div className="win-columns">
         <div className="win-column">
           <h6>The word was:</h6>
-          <p><strong>{word.toUpperCase()}</strong></p>
+          <p data-testid="correct-word"><strong>{word.toUpperCase()}</strong></p>
         </div>
         <div className="win-column">
           <h6>Time:</h6>
-          <p><strong>{formatTime(time)}</strong></p>
+          <p className="time"><strong>{formatTime(time)}</strong></p>
         </div>
       </div>
       </div>

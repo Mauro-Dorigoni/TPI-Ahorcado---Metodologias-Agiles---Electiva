@@ -62,7 +62,7 @@ const Guess = ({ onClose, onSubmit, wordLength = 1 }) => {
           ))}
           <div className="guess-keyboard-row action-row">
             <button className="guess-keyboard-button action-button" onClick={handleDelete}>🡠</button>
-            <button className="guess-keyboard-button action-button" onClick={handleSubmit}>✓</button>
+            <button className="guess-keyboard-button action-button" onClick={handleSubmit} data-testid="check">✓</button>
           </div>
         </div>
       </div>
