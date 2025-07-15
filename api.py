@@ -10,11 +10,17 @@ from flask import session
 from uuid import uuid4
 
 
-#env_file = os.environ.get("APP_ENV_FILE", ".env")
+env_name = os.getenv("ENVIRONMENT", "development")
+if env_name == "production":
+    load_dotenv(".env.production")
+elif env_name == "testing":
+    load_dotenv(".env.testing")
+else:
+    load_dotenv(".env.development")
 
 environment = os.getenv("FLASK_ENV")
 debug_mode = True if environment == "development" else False
-testing = False 
+testing = os.getenv("TESTING", "False").lower() == "true"
 
 app = Flask(__name__)
 
