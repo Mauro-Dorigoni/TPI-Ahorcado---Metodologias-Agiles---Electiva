@@ -30,32 +30,32 @@ class TestAhorcado(unittest.TestCase):
     def testRiskWrongWordThenLose(self):
         """Prueba que arriesgar una palabra incorrecta retorna False."""
         riskedWord = "palabra"
-        ahorcado = Ahorcado()
+        ahorcado = Ahorcado(False)
         self.assertFalse(ahorcado.riskWord(riskedWord))
 
     def testRiskRightWordThenWin(self):
         """Prueba que arriesgar la palabra correcta retorna True."""
-        ahorcado = Ahorcado()
+        ahorcado = Ahorcado(False)
         riskedWord = ahorcado.getRightWord()
         self.assertTrue(ahorcado.riskWord(riskedWord))
 
     def testRiskWrongLetterThenLoseLife(self):
         """Prueba que arriesgar una letra incorrecta resta una vida."""
-        ahorcado = Ahorcado()
+        ahorcado = Ahorcado(False)
         palabra = ahorcado.getRightWord()
         riskedLetter = self.getWrongLetter(palabra)
         self.assertFalse(ahorcado.riskLetter(riskedLetter))
 
     def testRiskRightLetterThenKeepLife(self):
         """Prueba que arriesgar una letra correcta no resta vidas."""
-        ahorcado = Ahorcado()
+        ahorcado = Ahorcado(False)
         palabra = ahorcado.getRightWord()
         riskedLetter = self.getRightLetter(palabra)
         self.assertTrue(ahorcado.riskLetter(riskedLetter))
 
     def testRiskSixWrongLettersThenLoseGame(self):
         """Prueba que arriesgar seis letras incorrectas termina el juego."""
-        ahorcado = Ahorcado()
+        ahorcado = Ahorcado(False)
         palabra = ahorcado.getRightWord()
         wrongLetters = list(set(string.ascii_lowercase) - set(palabra))
         riskedLetters = wrongLetters[:6]
@@ -67,24 +67,24 @@ class TestAhorcado(unittest.TestCase):
 
     def testGetRightWord(self):
         """Prueba que la palabra correcta es una cadena no vacía."""
-        ahorcado = Ahorcado()
+        ahorcado = Ahorcado(False)
         rightWord = ahorcado.getRightWord()
         self.assertIsInstance(rightWord, str)
         self.assertTrue(rightWord.strip() != "")
 
     def testNotReceiveWord(self):
         """Prueba que la palabra correcta no está vacía."""
-        ahorcado = Ahorcado()
+        ahorcado = Ahorcado(False)
         rightWord = ahorcado.getRightWord()
         self.assertTrue(rightWord.strip() != "")
 
     def testFiveDifferentWords(self):
         """Prueba que cinco instancias tienen palabras diferentes."""
-        ahorcado1 = Ahorcado()
-        ahorcado2 = Ahorcado()
-        ahorcado3 = Ahorcado()
-        ahorcado4 = Ahorcado()
-        ahorcado5 = Ahorcado()
+        ahorcado1 = Ahorcado(False)
+        ahorcado2 = Ahorcado(False)
+        ahorcado3 = Ahorcado(False)
+        ahorcado4 = Ahorcado(False)
+        ahorcado5 = Ahorcado(False)
 
         words = {
             ahorcado1.getRightWord(),
@@ -98,12 +98,12 @@ class TestAhorcado(unittest.TestCase):
 
     def testStartLives6(self):
         """Prueba que el jugador inicia con 6 vidas."""
-        ahorcado = Ahorcado()
+        ahorcado = Ahorcado(False)
         self.assertEqual(ahorcado.lives, 6)
 
     def testInitialWordHidden(self):
         """Prueba que la palabra inicial está oculta con guiones bajos."""
-        ahorcado = Ahorcado()
+        ahorcado = Ahorcado(False)
         palabra = ahorcado.getRightWord()
         estado = ahorcado.getWordState()
         for letra in estado:
@@ -112,12 +112,12 @@ class TestAhorcado(unittest.TestCase):
 
     def testInitialRiskedLettersEmpty(self):
         """Prueba que inicialmente no hay letras arriesgadas."""
-        ahorcado = Ahorcado()
+        ahorcado = Ahorcado(False)
         self.assertEqual(len(ahorcado.getRiskedLetters()), 0)
 
     def testRiskWrongLetterAgainNotLoseLife(self):
         """Prueba que arriesgar la misma letra incorrecta no resta vidas adicionales."""
-        ahorcado = Ahorcado()
+        ahorcado = Ahorcado(False)
         palabra = ahorcado.getRightWord()
         riskedLetter = self.getWrongLetter(palabra)
 
