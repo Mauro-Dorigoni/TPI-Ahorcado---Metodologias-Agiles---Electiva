@@ -7,7 +7,6 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 from ahorcado_class import Ahorcado
 
-
 env_name = os.getenv("ENVIRONMENT", "development")
 if env_name == "production":
     load_dotenv(".env.production")
