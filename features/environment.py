@@ -6,6 +6,7 @@ from selenium.webdriver.firefox.service import Service as FirefoxService
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 import os
+import tempfile
 
 # --- Configuración General ---
 FRONTEND_URL = "http://localhost:3000"
@@ -35,9 +36,12 @@ def before_scenario(context, scenario):
     print(f"\n--> Ejecutando escenario: {scenario.name}")
 
     if BROWSER == 'chrome':
+        import tempfile
         service = ChromeService(ChromeDriverManager().install())
         options = webdriver.ChromeOptions()
         options.add_argument('--disable-features=ChromeWhatsNewUI')
+        user_data_dir = tempfile.mkdtemp()
+        options.add_argument(f'--user-data-dir={user_data_dir}')
         context.driver = webdriver.Chrome(service=service, options=options)
     elif BROWSER == 'firefox':
         # Instala y usa GeckoDriver automáticamente.
