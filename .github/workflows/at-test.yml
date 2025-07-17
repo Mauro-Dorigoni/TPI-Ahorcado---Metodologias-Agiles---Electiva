@@ -59,7 +59,7 @@ jobs:
             ENVIRONMENT: testing
         run: |
           python app.py &
-          sleep 10
+          sleep 20
 
       - name: Start frontend
         working-directory: ./frontend
