@@ -1,4 +1,5 @@
 # features/environment.py
+# pylint: skip-file
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.firefox.service import Service as FirefoxService

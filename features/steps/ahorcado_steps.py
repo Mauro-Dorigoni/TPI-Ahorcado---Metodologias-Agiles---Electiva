@@ -1,4 +1,5 @@
 # features/steps/ahorcado_steps.py
+# pylint: skip-file
 from behave import *
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait

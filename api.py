@@ -1,13 +1,11 @@
+""" REST API for the hangman game, using the Ahorcado class. """
 
-#REST API for the hangman game, using the hangban class.
-
-from flask import Flask, request, jsonify
-from flask_cors import CORS
-from ahorcado_class import Ahorcado
-from dotenv import load_dotenv
 import os
-from flask import session
 from uuid import uuid4
+from flask import Flask, request, jsonify, session
+from flask_cors import CORS
+from dotenv import load_dotenv
+from ahorcado_class import Ahorcado
 
 
 env_name = os.getenv("ENVIRONMENT", "development")
@@ -19,7 +17,7 @@ else:
     load_dotenv(".env.development")
 
 environment = os.getenv("FLASK_ENV")
-debug_mode = True if environment == "development" else False
+DEBUG_MODE = True if environment == "development" else False
 testing = os.getenv("TESTING", "False").lower() == "true"
 
 app = Flask(__name__)
@@ -30,58 +28,57 @@ app.config.update(
 )
 
 CORS(app, supports_credentials=True, origins=["https://tpi-ahorcado-metodologias-agiles-el.vercel.app","http://localhost:3000"])
-#ahorcado = None # pylint: disable=invalid-name
 
 app.secret_key = os.getenv("SECRET_KEY", "clave-super-secreta")
 
-# Diccionario global de juegos
+# Global Game Diccionary
 games = {}
 
-# Middleware para asegurar que cada cliente tenga un session_id
+# Middleware that ensures every user has an identifier
 @app.before_request
-def ensure_session():
-#    session['testMode'] = False
-    if 'session_id' not in session:
-        session['session_id'] = str(uuid4())
+def ensureSession():
+    """ Method that ensures the session cookie is present """
+    if 'sessionId' not in session:
+        session['sessionId'] = str(uuid4())
 
-# Función auxiliar para obtener el juego actual
-def get_current_game():
-    session_id = session.get('session_id')
-    return games.get(session_id)
+def getCurrentGame():
+    """ Method that returns the current game """
+    sessionId = session.get('sessionId')
+    return games.get(sessionId)
 
-# Función auxiliar para establecer el juego actual
-def set_current_game(game_instance):
-    session_id = session.get('session_id')
-    games[session_id] = game_instance
+def setCurrentGame(gameInstance):
+    """ Method that sets a current game """
+    sessionId = session.get('sessionId')
+    games[sessionId] = gameInstance
 
 #----------------------------------------------------------------------
 
 @app.route('/saludo', methods=['POST'])
 def saludo():
-    #Greets the user. Purely for debugging purposes.
+    """ Greets the user. Purely for debugging purposes. """
     nombre = request.args.get('nombre', 'desconocido')
     return f'Hola, {nombre}!'
 
 @app.route('/getRightWord', methods=['GET'])
 def getRightWord():
-    #Returns the right word for the current game
-    game = get_current_game()
+    """ Returns the right word for the current game """
+    game = getCurrentGame()
     if game is None:
         return jsonify({'error': 'No hay juego iniciado'}), 400
     return jsonify({'rightWord': game.getRightWord()})
 
 @app.route('/getWordState', methods=['GET'])
 def getWordState():
-    #Returns the current state of the palayers gueses (right letters discovered)
-    game = get_current_game()
+    """ Returns the current state of the palayers gueses (right letters discovered) """
+    game = getCurrentGame()
     if game is None:
         return jsonify({'error': 'No hay juego iniciado'}), 400
     return jsonify({'wordState': game.getWordState()})
 
 @app.route('/riskWord', methods=['POST'])
 def riskWord():
-    #Recieves a risked word and returns true or false.
-    game = get_current_game()
+    """ Recieves a risked word and returns true or false. """
+    game = getCurrentGame()
     if game is None:
         return jsonify({'error': 'No hay juego iniciado'}), 400
     riskedWord = request.args.get('riskedWord', '')
@@ -96,7 +93,7 @@ def riskedLetter():
     - False if its not,
     - "Game Over" if the player is out of lives.
     """
-    game = get_current_game()
+    game = getCurrentGame()
     if game is None:
         return jsonify({'error': 'No hay juego iniciado'}), 400
     riskedLetters = request.args.get('riskedLetters', '').lower()
@@ -105,8 +102,8 @@ def riskedLetter():
 
 @app.route('/getRiskedLetters', methods=['GET'])
 def getRiskedLetters():
-    #Returns the list of risked letter by the player
-    game = get_current_game()
+    """ Returns the list of risked letter by the player """
+    game = getCurrentGame()
     if game is None:
         return jsonify({'error': 'No hay juego iniciado'}), 400
     letras = list(game.getRiskedLetters())
@@ -114,11 +111,11 @@ def getRiskedLetters():
 
 @app.route('/startGame', methods=['POST'])
 def startGame():
-
-    set_current_game(Ahorcado(testMode=testing))
+    """ Starts a new game """
+    setCurrentGame(Ahorcado(testMode=testing))
     return jsonify({'message': 'New Game Started'})
 
 
 
 if __name__ == '__main__':
-    app.run(debug=debug_mode, host='0.0.0.0', port=10000)
+    app.run(debug=DEBUG_MODE, host='0.0.0.0', port=10000)

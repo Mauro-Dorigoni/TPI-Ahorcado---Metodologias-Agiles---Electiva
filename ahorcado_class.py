@@ -18,7 +18,6 @@ class Ahorcado:
         self.lives = 6
         self.wordState = ['_' for _ in self.rightWord]
         self.riskedLetters = set()
-        
 
     def getWordState(self):
         """Devuelve el estado actual de la palabra con letras descubiertas."""
