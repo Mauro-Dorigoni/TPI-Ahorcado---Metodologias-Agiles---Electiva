@@ -8,14 +8,8 @@ from webdriver_manager.firefox import GeckoDriverManager
 import os
 
 # --- Configuración General ---
-#FRONTEND_URL = "https://tpi-ahorcado-metodologias-agiles-el.vercel.app"
 FRONTEND_URL = "http://localhost:3000"
 API_URL = "http://localhost:10000"
-#API_URL = "https://api-ahorcado-grupo-2-metodologias-agiles.onrender.com"
-
-# Puedes definir qué navegador usar por defecto.
-# Permite cambiarlo fácilmente con una variable de entorno:
-# BEHAVE_BROWSER=firefox behave
 BROWSER = os.environ.get('BEHAVE_BROWSER', 'chrome').lower()
 
 
@@ -32,11 +26,6 @@ def before_all(context):
     print(f"\nIniciando pruebas E2E con Behave y Selenium en {BROWSER.capitalize()}...")
     print(f"Frontend URL: {context.frontend_url}")
     print(f"API URL: {context.api_url}")
-    # Puedes añadir lógica aquí para iniciar tu API Flask automáticamente para las pruebas,
-    # aunque esto puede ser complejo y a menudo se prefiere iniciarla manualmente o con un script aparte.
-    # import subprocess
-    # context.api_process = subprocess.Popen(["python", "path/to/your/flask_app.py"])
-
 
 def before_scenario(context, scenario):
     """
@@ -46,14 +35,9 @@ def before_scenario(context, scenario):
     print(f"\n--> Ejecutando escenario: {scenario.name}")
 
     if BROWSER == 'chrome':
-        # Instala y usa ChromeDriver automáticamente.
         service = ChromeService(ChromeDriverManager().install())
         options = webdriver.ChromeOptions()
-        # Opciones útiles para Chrome:
-        # options.add_argument('--headless')          # Ejecuta Chrome sin interfaz gráfica (más rápido)
-        # options.add_argument('--disable-gpu')       # Necesario para --headless en algunos sistemas
-        # options.add_argument('--no-sandbox')        # Útil en entornos de CI como Docker
-        # options.add_argument('--window-size=1920,1080') # Tamaño de ventana para headless
+        options.add_argument('--disable-features=ChromeWhatsNewUI')
         context.driver = webdriver.Chrome(service=service, options=options)
     elif BROWSER == 'firefox':
         # Instala y usa GeckoDriver automáticamente.
