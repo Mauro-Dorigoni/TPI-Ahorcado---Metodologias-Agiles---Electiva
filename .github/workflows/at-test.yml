@@ -58,7 +58,7 @@ jobs:
         env:
             ENVIRONMENT: testing
         run: |
-          python app.py &
+          python api.py &
           sleep 20
 
       - name: Start frontend
