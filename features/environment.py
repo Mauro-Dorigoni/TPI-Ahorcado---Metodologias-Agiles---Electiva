@@ -39,16 +39,19 @@ def before_scenario(context, scenario):
         import tempfile
         service = ChromeService(ChromeDriverManager().install())
         options = webdriver.ChromeOptions()
+        options.add_argument('--headless')
+        options.add_argument('--no-sandbox')
+        options.add_argument('--disable-dev-shm-usage')
+        options.add_argument('--window-size=1920,1080')
         options.add_argument('--disable-features=ChromeWhatsNewUI')
+        # Directorio temporal único para evitar conflicto de perfil:
         user_data_dir = tempfile.mkdtemp()
         options.add_argument(f'--user-data-dir={user_data_dir}')
         context.driver = webdriver.Chrome(service=service, options=options)
     elif BROWSER == 'firefox':
-        # Instala y usa GeckoDriver automáticamente.
         service = FirefoxService(GeckoDriverManager().install())
         options = webdriver.FirefoxOptions()
-        # Opciones útiles para Firefox:
-        # options.add_argument('--headless')          # Ejecuta Firefox sin interfaz gráfica
+        options.add_argument('--headless')
         context.driver = webdriver.Firefox(service=service, options=options)
     else:
         raise ValueError(f"Navegador no soportado: {BROWSER}. Elige 'chrome' o 'firefox'.")
