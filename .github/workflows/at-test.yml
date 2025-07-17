@@ -40,13 +40,15 @@ jobs:
         working-directory: ./frontend
         run: npm install
 
-      - name: Crear archivo .env para backend
+      - name: Crear archivo .env.testing para backend
         run: |
-          echo "ENVIRONMENT=testing" >> .env
-          echo "FLASK_ENV=testing" >> .env
-          echo "DEBUG_MODE=false" >> .env
-          echo "SECRET_KEY=noOdiamosScrum" >> .env
-          echo "TESTING=True" >> .env
+          echo "FLASK_ENV=testing" >> .env.testing
+          echo "DEBUG_MODE=false" >> .env.testing
+          echo "SECRET_KEY=noOdiamosScrum" >> .env.testing
+          echo "TESTING=True" >> .env.testing
+
+      - name: Exportar ENVIRONMENT para levantar en modo testing
+        run: echo "ENVIRONMENT=testing" >> $GITHUB_ENV
 
       - name: Crear archivo .env para frontend
         working-directory: ./frontend
@@ -72,3 +74,10 @@ jobs:
         run: behave
         env:
           SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
+
+      - name: Upload screenshots if test fails
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-screenshots
+          path: features/test_screenshots/
