@@ -17,7 +17,7 @@ else:
     load_dotenv(".env.development")
 
 environment = os.getenv("FLASK_ENV")
-DEBUG_MODE = True if environment == "development" else False
+DEBUG_MODE = DEBUG_MODE = environment == "development"
 testing = os.getenv("TESTING", "False").lower() == "true"
 
 app = Flask(__name__)
