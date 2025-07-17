@@ -21,7 +21,7 @@ const Home = () => {
       navigate("/game");
     })
     .catch((err) => {
-      console.log("No se pudo iniciar el juego:", err)
+      alert("No se pudo iniciar el juego:", err)
     });
   };
 
