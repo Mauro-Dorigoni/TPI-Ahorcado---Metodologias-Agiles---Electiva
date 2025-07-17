@@ -1,0 +1,74 @@
+name: Acceptance Tests
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  run-behave-tests:
+    runs-on: ubuntu-latest
+
+    services:
+      selenium:
+        image: selenium/standalone-chrome
+        ports:
+          - 4444:4444
+        options: >-
+          --shm-size 2g
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.8'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Instalar dependencias Python
+        run: |
+          pip install -r requirements.txt
+
+      - name: Instalar dependencias frontend
+        working-directory: ./frontend
+        run: npm install
+
+      - name: Crear archivo .env para backend
+        run: |
+          echo "ENVIRONMENT=testing" >> .env
+          echo "FLASK_ENV=testing" >> .env
+          echo "DEBUG_MODE=false" >> .env
+          echo "SECRET_KEY=noOdiamosScrum" >> .env
+          echo "TESTING=True" >> .env
+
+      - name: Crear archivo .env para frontend
+        working-directory: ./frontend
+        run: |
+          echo "NODE_ENV=testing" >> .env
+          echo "REACT_APP_API_URL=http://localhost:10000" >> .env
+
+      - name: Start backend
+        env:
+            ENVIRONMENT: testing
+        run: |
+          python app.py &
+          sleep 10
+
+      - name: Start frontend
+        working-directory: ./frontend
+        run: |
+          npm run start &
+          sleep 15
+
+      - name: Run Behave acceptance tests
+        working-directory: ./features
+        run: behave
+        env:
+          SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
