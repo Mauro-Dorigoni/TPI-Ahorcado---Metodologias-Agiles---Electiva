@@ -41,7 +41,7 @@ def ensureSession():
         session['sessionId'] = str(uuid4())
 
 def getCurrentGame():
-    """ Method that returns the current game """
+    # Method that returns the current game
     sessionId = session.get('sessionId')
     return games.get(sessionId)
 
